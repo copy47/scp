@@ -54,7 +54,7 @@ CITY=$( curl -s ipinfo.io/city )
 #clear
 
 # CHEK STATUS 
-#l2tp_status=$(systemctl status xl2tpd | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+l2tp_status=$(systemctl status xl2tpd | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 openvpn_service="$(systemctl show openvpn.service --no-page)"
 oovpn=$(echo "${openvpn_service}" | grep 'ActiveState=' | cut -f2 -d=)
 #status_openvp=$(/etc/init.d/openvpn status | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
@@ -71,12 +71,12 @@ ssh_service=$(/etc/init.d/ssh status | grep Active | awk '{print $3}' | cut -d "
 vnstat_service=$(/etc/init.d/vnstat status | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 cron_service=$(/etc/init.d/cron status | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 fail2ban_service=$(/etc/init.d/fail2ban status | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
-#wg="$(systemctl show wg-quick@wg0.service --no-page)"
-#swg=$(echo "${wg}" | grep 'ActiveState=' | cut -f2 -d=)
+wg="$(systemctl show wg-quick@wg0.service --no-page)"
+swg=$(echo "${wg}" | grep 'ActiveState=' | cut -f2 -d=)
 trgo="$(systemctl show trojan-go.service --no-page)"                                      
 strgo=$(echo "${trgo}" | grep 'ActiveState=' | cut -f2 -d=)  
-#sswg=$(systemctl status wg-quick@wg0 | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
-wstls=$(systemctl status ws-tls | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+sswg=$(systemctl status wg-quick@wg0 | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+#wstls=$(systemctl status ws-tls | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 wsdrop=$(systemctl status ws-nontls | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 wsovpn=$(systemctl status ws-ovpn | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 #wsopen=$(systemctl status ws-openssh | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
@@ -173,11 +173,25 @@ else
    status_virus_trojan="${RED}  Not Running ${NC}  ( Error )${NC}"
 fi
 
+# STATUS SERVICE WIREGUARD
+if [[ $swg == "active" ]]; then
+  status_wg=" ${GREEN}Running ${NC}( No Error )${NC}"
+else
+  status_wg="${RED}  Not Running ${NC}  ( Error )${NC}"
+fi
+
 # Status Service Trojan GO
 if [[ $strgo == "active" ]]; then
   status_trgo=" ${GREEN}Running ${NC}( No Error )${NC}"
 else
   status_trgo="${RED}  Not Running ${NC}  ( Error )${NC}"
+fi
+
+# STATUS SERVICE L2TP
+if [[ $l2tp_status == "running" ]]; then 
+   status_l2tp=" ${GREEN}Running${NC} ( No Error )${NC}"
+else
+   status_l2tp="${RED}  Not Running${NC}  ( Error )${NC}"
 fi
 
 # STATUS SERVICE DROPBEAR
@@ -195,7 +209,7 @@ else
 fi
 
 # STATUS SERVICE WEBSOCKET TLS
-if [[ $wstls == "running" ]]; then 
+if [[ $wsdrop == "running" ]]; then 
    swstls=" ${GREEN}Running ${NC}( No Error )${NC}"
 else
    swstls="${RED}  Not Running ${NC}  ( Error )${NC}"
@@ -284,9 +298,9 @@ kernelku=$(uname -r)
 # GETTING DOMAIN NAME
 Domen="$(cat /etc/xray/domain)"
 echo -e ""
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo -e "         ${ORANGE}● ${LIGHT} Sytem Information            \E[0m"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "         ☀ Sytem Information ☀            \E[0m"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
 echo -e "Hostname    : $HOSTNAME"
 echo -e "OS Name     : $Tipe"
 #echo -e "Processor   : $tipeprosesor"
@@ -296,14 +310,19 @@ echo -e "OS Name     : $Tipe"
 echo -e "Total RAM   : ${totalram}MB"
 echo -e "Public IP   : $MYIP"
 echo -e "Domain      : $Domen"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo -e "          ${ORANGE}● ${LIGHT} Service Information               \E[0m"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "         ☀ Subscription Information ☀           \E[0m"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "Client Name : NBC"
+echo -e "Exp Script  : $77777777"
+echo -e "Version     : Latest Version"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "          ☀ Service Information ☀             \E[0m"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
 echo -e "SSH / TUN               :$status_ssh"
 echo -e "OpenVPN                 :$status_openvpn"
 echo -e "Dropbear                :$status_beruangjatuh"
 echo -e "stunnel4                :$status_stunnel"
-echo -e "Squid                   :$status_squid"
 echo -e "Fail2Ban                :$status_fail2ban"
 echo -e "Crons                   :$status_cron"
 echo -e "Vnstat                  :$status_vnstat"
@@ -312,13 +331,13 @@ echo -e "XRAYS Vmess None TLS    :$status_nontls_v2ray"
 echo -e "XRAYS Vless TLS         :$status_tls_vless"
 echo -e "XRAYS Vless None TLS    :$status_nontls_vless"
 echo -e "XRAYS Trojan            :$status_virus_trojan"
-echo -e "TrojanGO                :$status_trgo"
-echo -e "Websocket TLS           :$wstls"
+echo -e "Trojan GO               :$status_trgo"
+echo -e "Websocket TLS           :$swstls"
 echo -e "Websocket None TLS      :$swsdrop"
 echo -e "Websocket Ovpn          :$swsovpn"
 echo -e "OHP Dropbear            :$sohp"
 echo -e "OHP OpenVPN             :$sohq"
 echo -e "OHP SSH                 :$sohr"
 echo -e "SSL / SSH Multiplexer   :$sosslh"
-echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
 echo ""
