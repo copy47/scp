@@ -104,12 +104,12 @@ export UNDERLINE="\e[4m"
 export IP=$( curl -s https://ipinfo.io/ip/ )
 
 # // SSH Websocket Proxy
-ssh_ws=$( systemctl status wstls | grep Active | awk '{print $3}' | sed 's/(//g' | sed 's/)//g' )
-if [[ $ssh_ws == "running" ]]; then
-    status_ws="${GREEN}ON${NC}"
-else
-    status_ws="${RED}OFF${NC}"
-fi
+#ssh_ws=$( systemctl status wstls | grep Active | awk '{print $3}' | sed 's/(//g' | sed 's/)//g' )
+#if [[ $ssh_ws == "running" ]]; then
+#    status_ws="${GREEN}ON${NC}"
+#else
+#    status_ws="${RED}OFF${NC}"
+#fi
 
 # // nginx
 nginx=$( systemctl status nginx | grep Active | awk '{print $3}' | sed 's/(//g' | sed 's/)//g' )
