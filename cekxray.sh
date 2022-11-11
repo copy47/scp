@@ -19,7 +19,7 @@ sleep 3
 
 clear
 echo -n > /tmp/other.txt
-data=( `cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq`);
+data=( `cat /etc/xray/config.json | grep '^' | cut -d ' ' -f 2 | sort | uniq`);
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}";
 echo -e "${NC}---------=[ XRAY USER LOGIN ]=--------${NC}";
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}";for akun in "${data[@]}"
