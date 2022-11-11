@@ -31,7 +31,7 @@ echo "Checking VPS"
 MYIP=$(curl -sS ipv4.icanhazip.com)
 clear
 echo -n > /tmp/other.txt
-data=( `cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq`);
+data=( `cat /etc/xray/config.json | grep '^##' | cut -d ' ' -f 2 | sort | uniq`);
 echo "----------------------------------------";
 echo "---------=[ Vmess User Login ]=---------";
 echo "----------------------------------------";
