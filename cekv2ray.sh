@@ -1,44 +1,43 @@
 #!/bin/bash
+# My Telegram : https://t.me/Akbar218
 # ==========================================
 # Color
 RED='\033[0;31m'
 NC='\033[0m'
-#GREEN='\033[0;32m'
-#ORANGE='\033[0;33m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
-#CYAN='\033[0;36m'
+CYAN='\033[0;36m'
 LIGHT='\033[0;37m'
-off='\x1b[m'
 # ==========================================
 # Getting
 MYIP=$(wget -qO- icanhazip.com);
-IZIN=$( curl https://Etil-arya.github.io/izin | grep $MYIP )
+IZIN=$( curl https://myridwan.github.io/izin | grep $MYIP )
 echo "Memeriksa Hak Akses VPS..."
 if [ $MYIP = $IZIN ]; then
 clear
-echo -e "${GREEN}Akses Diizinkan...${off}"
+echo -e "${CYAN}Akses Diizinkan...${off}"
 sleep 1
 else
 clear
-echo -e "${RED}Akses Diblokir!${off}"
+echo -e "${PURPLE}Akses Diblokir!${off}"
 echo "Hanya Untuk Pengguna Berbayar!"
 echo "Silahkan Hubungi Admin"
 exit 0
 fi
 clear
 echo "Checking VPS"
-MYIP=$(curl -sS ipv4.icanhazip.com)
 clear
 echo -n > /tmp/other.txt
-data=( `cat /etc/xray/config.json | grep '^#' | cut -d ' ' -f 2 | sort | uniq`);
+data=( `cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2`);
 echo "----------------------------------------";
 echo "---------=[ Vmess User Login ]=---------";
 echo "----------------------------------------";
 for akun in "${data[@]}"
 do
 if [[ -z "$akun" ]]; then
-akun="akun"
+akun="tidakada"
 fi
 echo -n > /tmp/ipvmess.txt
 data2=( `netstat -anp | grep ESTABLISHED | grep tcp6 | grep xray | awk '{print $5}' | cut -d: -f1 | sort | uniq`);
@@ -65,9 +64,8 @@ fi
 rm -rf /tmp/ipvmess.txt
 done
 oth=$(cat /tmp/other.txt | sort | uniq | nl)
+echo "other";
 echo "$oth";
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo "----------------------------------------"
+echo "Script By RIDWAN STORE"
 rm -rf /tmp/other.txt
-echo ""
-read -n 1 -s -r -p "Press any key to back on menu"
-menu
